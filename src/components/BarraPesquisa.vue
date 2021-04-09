@@ -6,7 +6,7 @@
     </v-row>
 
     <v-row class="mt-2 flex-column" align="center">
-      <v-col class="col-6">
+      <v-col cols="10" md="6">
         <v-autocomplete
           v-model="cachorroPesquisado"
           color="orange"
