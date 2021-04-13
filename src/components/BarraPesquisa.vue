@@ -16,7 +16,7 @@
         >
         </v-autocomplete>
 
-        <p v-if="cachorroPesquisado != ''" class="selectCachorro">
+        <p v-if="cachorroPesquisado !== ''" class="selectCachorro">
           Você pesquisou por:
           <strong class="orange--text">{{ cachorroPesquisado }}</strong
           >. 🐶
@@ -32,25 +32,13 @@
 
 <script>
 export default {
-  data() {
-    return {
-      cachorroPesquisado: "",
-      racasCachorro: [],
-    };
-  },
-  methods: {
-    getTodosCachorros() {
-      fetch("https://dog.ceo/api/breeds/list/all")
-        .then((resposta) => resposta.json())
-        .then((racas) => (this.racasCachorro = racas));
-    },
-
-    capitalize: function (value) {
-      if (!value) return "";
-      value = value.toString();
-      return value.charAt(0).toUpperCase() + value.slice(1);
-    },
-  },
+  name: "BarraPesquisa",
+  components: {},
+  props: {},
+  data: () => ({
+    cachorroPesquisado: "",
+    racasCachorro: [],
+  }),
   computed: {
     listaCachorros() {
       const dados = this.racasCachorro.message;
@@ -71,8 +59,24 @@ export default {
       return racas.sort();
     },
   },
-  created() {
+  watch: {},
+  created() {},
+  mounted() {
     this.getTodosCachorros();
+  },
+  beforeDestroy() {},
+  methods: {
+    getTodosCachorros() {
+      fetch("https://dog.ceo/api/breeds/list/all")
+        .then((resposta) => resposta.json())
+        .then((racas) => (this.racasCachorro = racas));
+    },
+
+    capitalize: function (value) {
+      if (!value) return "";
+      value = value.toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    },
   },
 };
 </script>
