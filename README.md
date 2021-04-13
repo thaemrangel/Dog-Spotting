@@ -8,16 +8,17 @@
  
 
 A simple project that selects and filters dogs based on their breed. 🐾
-Preview [here!](https://inspiring-varahamihira-2d2454.netlify.app/)
-Content Language: 🇧🇷
-It consumes an API called Dog CEO by ![@ElliottLandsborough.](https://github.com/ElliottLandsborough/dog-ceo-api)
+<br>
+Preview [here!](https://inspiring-varahamihira-2d2454.netlify.app/) | Content Language: Brazilian Portuguese. 
+<br>
+It consumes an API called *Dog CEO* by [@ElliottLandsborough.](https://github.com/ElliottLandsborough/dog-ceo-api)
 
 <br>
- 
  Use ``npm install`` to install the dependencies to run this project.
- Project by [Thaiane Eiras](https://github.com/thaemrangel)
+<br>
+ Project by [Thaiane Eiras](https://github.com/thaemrangel).
 
- ### Made with
+ ## Made with: 
 
 | Tecnology  | Version |
 |:-:|:-:|
