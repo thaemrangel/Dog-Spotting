@@ -81,8 +81,7 @@ export default {
 };
 </script>
 
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Barlow&display=swap");
+<style scoped> 
 
 .titulo {
   font-size: 3rem;

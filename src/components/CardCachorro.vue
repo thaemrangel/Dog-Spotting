@@ -75,8 +75,7 @@ export default {
 };
 </script>
 
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Barlow&display=swap");
+<style scoped>  
 
 p {
   font-size: 1.5rem;
