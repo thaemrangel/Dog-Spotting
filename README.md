@@ -9,6 +9,7 @@
  
 ##   Preview: 
 [Here!](https://inspiring-varahamihira-2d2454.netlify.app/)
+
 *Content Language: Brazilian Portuguese.*
 
 ##   Attention: 
@@ -16,9 +17,7 @@
 This application consumes an API called **Dog CEO** by [@ElliottLandsborough.](https://github.com/ElliottLandsborough/dog-ceo-api)
 
 Use ``npm install`` to install the dependencies to run this project. 
-
-Project by [Thaiane Eiras](https://github.com/thaemrangel).
- 
+  
 | Tecnologies used  | Version |
 |:-:|:-:|
 | [VueJs](https://vuejs.org/)  | latest | 
@@ -26,4 +25,4 @@ Project by [Thaiane Eiras](https://github.com/thaemrangel).
 | [Sass](https://sass-lang.com/)  | latest | 
 | [Vuetify](https://vuetifyjs.com/en/)  | latest | 
 
-Thank you! ♥
+A small project by [Thaiane Eiras](https://github.com/thaemrangel). | Thank you for visiting! 🐶
