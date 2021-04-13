@@ -25,16 +25,21 @@
     </v-row>
 
     <v-row>
-      <card-cachorro :raca="cachorroPesquisado"></card-cachorro>
+       
     </v-row>
+
   </v-container>
 </template>
 
-<script>
+<script>  
+import CardCachorro from './CardCachorro.vue';
+
 export default {
   name: "BarraPesquisa",
 
-  components: {},
+  components: {
+    CardCachorro
+  },
 
   props: {},
 
@@ -56,6 +61,10 @@ export default {
         ];
       }, []);
     },
+
+  
+
+    
   },
 
   watch: {},

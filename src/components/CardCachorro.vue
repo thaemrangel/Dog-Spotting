@@ -1,7 +1,5 @@
 <template>
-  <div>
-    {{ getCachorroEspecifico }}
-
+  <div>  
     <v-card class="d-flex flex-wrap justify-center mb-10" elevation="0">
       <v-card
         class="mx-auto mt-10"
@@ -73,13 +71,4 @@ export default {
     },
   },
 };
-</script>
-
-<style scoped>  
-
-p {
-  font-size: 1.5rem;
-  text-align: center;
-  font-family: "Barlow", sans-serif;
-}
-</style>
+</script> 
