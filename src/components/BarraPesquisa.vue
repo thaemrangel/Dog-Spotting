@@ -80,20 +80,4 @@ export default {
   },
 };
 </script>
-
-<style scoped> 
-
-.titulo {
-  font-size: 3rem;
-  text-align: center;
-}
-
-.selectCachorro {
-  font-size: 1.3rem;
-  text-align: center;
-}
-
-p {
-  font-family: "Barlow", sans-serif;
-}
-</style>
+ 

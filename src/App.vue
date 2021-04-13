@@ -11,13 +11,13 @@ import BarraPesquisa from './components/BarraPesquisa.vue';
 
 export default {
   name: 'App',
-
   components: { 
     BarraPesquisa, 
   },
-
-  data: () => ({
-    //
-  }),
+  data: () => ({}),
 };
 </script>
+
+<style lang="scss">
+@import './scss/custom.scss';
+</style>
