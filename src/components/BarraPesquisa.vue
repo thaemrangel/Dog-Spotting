@@ -14,36 +14,56 @@
           append-icon="mdi-magnify"
           :items="tiposDeCachorro"
           @change="getCachorroSelecionado"
+          outlined
         >
         </v-autocomplete>
 
-        <p v-if="cachorroPesquisado !== ''" class="selectCachorro">
-          Você pesquisou por:
-          <strong class="orange--text">{{ cachorroPesquisado }}</strong
+        <p v-if="!!cachorroPesquisado" class="selectCachorro mb-16">
+          Você pesquisou por: <strong class="orange--text">{{ cachorroPesquisado }}</strong
           >. 🐶
         </p>
       </v-col>
     </v-row>
+ 
+    <v-row v-if="loading" class="mt-3 mb-10 flex-column" align="center">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="orange"
+        indeterminate
+      ></v-progress-circular>
+    </v-row> 
 
-    <v-data-iterator :items="imagens"
-     :items-per-page.sync="itemsPerPage"
-     :footer-props="{
-       'items-per-page-options' : itemsPerPageArray,
-       'items-per-page-all-text' : 'Todos',
-     }">
-
+    <v-data-iterator
+      v-if="!loading"
+      :items="imagens"
+      :items-per-page.sync="itemsPerPage"
+      :footer-props="{
+        'items-per-page-options': itemsPerPageArray,
+        'items-per-page-all-text': 'Todos',
+      }"
+    >
       <template #default="{ items }">
-      <v-row>
-        <v-col v-for="enderecoImagem in items" :key="enderecoImagem">
-          <CardCachorro v-if="verificarExiste(enderecoImagem)" :endereco-imagem="enderecoImagem" :favorito="true"  @adicionar="adicionarListaFavoritos" @remover="removerListaFavoritos" />
-          <CardCachorro v-else :endereco-imagem="enderecoImagem" :favorito="false" @adicionar="adicionarListaFavoritos" @remover="removerListaFavoritos" />
-        </v-col>
-      </v-row>
+        <v-row>
+          <v-col v-for="enderecoImagem in items" :key="enderecoImagem">
+            <CardCachorro
+              v-if="verificarExiste(enderecoImagem)"
+              :endereco-imagem="enderecoImagem"
+              :favorito="true"
+              @adicionar="adicionarListaFavoritos"
+              @remover="removerListaFavoritos"
+            />
+            <CardCachorro
+              v-else
+              :endereco-imagem="enderecoImagem"
+              :favorito="false"
+              @adicionar="adicionarListaFavoritos"
+              @remover="removerListaFavoritos"
+            />
+          </v-col>
+        </v-row>
       </template>
-      
     </v-data-iterator>
-
-
   </v-container>
 </template>
 
@@ -62,8 +82,8 @@ export default {
   data: () => ({
     cachorroPesquisado: "",
     imagens: [],
-    listaFavoritos:[], 
-
+    listaFavoritos: [],
+    loading: true, 
     racasCachorro: [],
     itemsPerPage: 8,
     itemsPerPageArray: [8, 16, 24, -1],
@@ -98,6 +118,7 @@ export default {
 
   methods: {
     async getTodosCachorros() {
+  
       try {
         const response = await this.$http.get(
           "https://dog.ceo/api/breeds/list/all"
@@ -109,6 +130,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
+ 
     },
 
     async populaCachorros() {
@@ -117,9 +139,12 @@ export default {
           `https://dog.ceo/api/breeds/image/random/50`
         );
         this.imagens = response.data.message;
+
       } catch (error) {
         console.log(error);
       }
+
+      this.loading = false; 
     },
 
     async getCachorroSelecionado() {
@@ -134,36 +159,43 @@ export default {
       }
     },
 
-    adicionarListaFavoritos(enderecoImagem){
-      if(!this.verificarExiste(enderecoImagem)){
+    adicionarListaFavoritos(enderecoImagem) {
+      if (!this.verificarExiste(enderecoImagem)) {
         this.listaFavoritos.push(enderecoImagem);
         this.saveCachorroFavoritado();
       }
     },
 
-    removerListaFavoritos(enderecoImagem){
-      if(this.verificarExiste(enderecoImagem)){
-        const indice = this.listaFavoritos.findIndex((favorito) => favorito === enderecoImagem);      
+    removerListaFavoritos(enderecoImagem) {
+      if (this.verificarExiste(enderecoImagem)) {
+        const indice = this.listaFavoritos.findIndex(
+          (favorito) => favorito === enderecoImagem
+        );
         this.listaFavoritos.splice(indice, 1);
         this.saveCachorroFavoritado();
       }
     },
 
-    verificarExiste(enderecoImagem){
-      return this.listaFavoritos.includes(enderecoImagem); 
+    verificarExiste(enderecoImagem) {
+      return this.listaFavoritos.includes(enderecoImagem);
     },
 
-    getCachorrosFavoritados(){
-      if(localStorage.getItem('listaFavoritos')){
-        this.listaFavoritos = JSON.parse(localStorage.getItem('listaFavoritos'));
-      } 
+    getCachorrosFavoritados() {
+      if (localStorage.getItem("listaFavoritos")) {
+        this.listaFavoritos = JSON.parse(
+          localStorage.getItem("listaFavoritos")
+        );
+      }
     },
 
-    saveCachorroFavoritado(){
-      localStorage.setItem('listaFavoritos', JSON.stringify(this.listaFavoritos));
+    saveCachorroFavoritado() {
+      localStorage.setItem(
+        "listaFavoritos",
+        JSON.stringify(this.listaFavoritos)
+      );
     },
 
-    capitalize: function(value) {
+    capitalize: function (value) {
       if (!value) return "";
       value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
