@@ -13,6 +13,7 @@
           label="Escolha um tipo de cachorro."
           append-icon="mdi-magnify"
           :items="tiposDeCachorro"
+          @change="getCachorroSelecionado"
         >
         </v-autocomplete>
 
@@ -24,8 +25,10 @@
       </v-col>
     </v-row>
 
-    <v-row>
-       
+    <v-row >
+      <v-col v-for="enderecoImagem in imagens" :key="enderecoImagem">
+        <CardCachorro :endereco-imagem="enderecoImagem" /> 
+      </v-col> 
     </v-row>
 
   </v-container>
@@ -35,7 +38,7 @@
 import CardCachorro from './CardCachorro.vue';
 
 export default {
-  name: "BarraPesquisa",
+  name: 'BarraPesquisa',
 
   components: {
     CardCachorro
@@ -44,27 +47,25 @@ export default {
   props: {},
 
   data: () => ({
-    cachorroPesquisado: "",
-    racasCachorro: [],
+    cachorroPesquisado: '',
+    imagens: [],
+    racasCachorro: [], 
   }),
 
   computed: {
     tiposDeCachorro() {
       return this.racasCachorro.reduce((arrayFinal, cachorro) => {
-        if (cachorro.subRaca.length === 0) {
+        if (!cachorro.subRaca.length) {
           arrayFinal.push(cachorro.raca);
           return arrayFinal;
         }
         return [
           ...arrayFinal,
-          ...cachorro.subRaca.map((subRaca) => `${subRaca} ${cachorro.raca}`),
+          ...cachorro.subRaca.map((subRaca) => `${cachorro.raca} ${subRaca}`),
         ];
-      }, []);
+      }, []);                                                                                                                     
     },
-
   
-
-    
   },
 
   watch: {},
@@ -90,10 +91,23 @@ export default {
         }));
       } catch (error) {
         console.log(error);
-      }
-
-      console.log(this.racasCachorro); 
+      } 
     },
+
+    async getCachorroSelecionado(){
+      try {
+
+        let raca = this.cachorroPesquisado.replace(' ', '/'); 
+ 
+        let response = await this.$http.get(`https://dog.ceo/api/breed/${raca}/images/random/50`);
+
+        this.imagens = response.data.message; 
+
+        console.log(this.imagens); 
+      } catch (error) {
+         console.log(error);
+      }
+    }, 
 
     capitalize: function (value) {
       if (!value) return "";

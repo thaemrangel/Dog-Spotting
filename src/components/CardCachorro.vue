@@ -1,21 +1,13 @@
-<template>
-  <div>  
-    <v-card class="d-flex flex-wrap justify-center mb-10" elevation="0">
-      <v-card
-        class="mx-auto mt-10"
-        width="250"
-        outlined
-        v-for="enderecoImagem in imagem.message"
-        :key="enderecoImagem"
-      >
+<template> 
+    <v-card class="d-flex flex-wrap justify-center mb-5" elevation="0">
+      <v-card class="mx-auto" width="250" outlined>
         <v-img aspect-ratio="1" :src="enderecoImagem"></v-img>
 
         <v-card-text align="right" class="indigo lighten-5">
           <v-icon @click="changeColorHandler()" :color="cor">mdi-heart</v-icon>
         </v-card-text>
       </v-card>
-    </v-card>
-  </div>
+    </v-card> 
 </template>
 
 
@@ -23,7 +15,9 @@
 export default {
   name: "CardCachorro",
   components: {},
-  props: ["raca"],
+  props: {
+    enderecoImagem: { type: String, default: "" },
+  },
   data: () => ({
     imagem: [],
     cor: "indigo lighten-4",
