@@ -1,5 +1,5 @@
 <template> 
-    <v-card class="d-flex flex-wrap justify-center mb-5" elevation="0">
+    <v-card class="d-flex flex-wrap mb-5" elevation="0">
       <v-card class="mx-auto" width="250" outlined>
         <v-img aspect-ratio="1" :src="enderecoImagem"></v-img>
 

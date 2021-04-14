@@ -25,31 +25,45 @@
       </v-col>
     </v-row>
 
-    <v-row >
-      <v-col v-for="enderecoImagem in imagens" :key="enderecoImagem">
-        <CardCachorro :endereco-imagem="enderecoImagem" /> 
-      </v-col> 
-    </v-row>
+    <v-data-iterator :items="imagens"
+     :items-per-page.sync="itemsPerPage"
+     :footer-props="{
+       'items-per-page-options' : itemsPerPageArray,
+       'items-per-page-all-text' : 'Todos',
+     }">
+
+      <template #default="{ items }">
+      <v-row>
+        <v-col v-for="enderecoImagem in items" :key="enderecoImagem">
+          <CardCachorro :endereco-imagem="enderecoImagem" />
+        </v-col>
+      </v-row>
+      </template>
+      
+    </v-data-iterator>
+
 
   </v-container>
 </template>
 
-<script>  
-import CardCachorro from './CardCachorro.vue';
+<script>
+import CardCachorro from "./CardCachorro.vue";
 
 export default {
-  name: 'BarraPesquisa',
+  name: "BarraPesquisa",
 
   components: {
-    CardCachorro
+    CardCachorro,
   },
 
   props: {},
 
   data: () => ({
-    cachorroPesquisado: '',
+    cachorroPesquisado: "",
     imagens: [],
-    racasCachorro: [], 
+    racasCachorro: [],
+    itemsPerPage: 8,
+    itemsPerPageArray: [8, 16, 24, -1],
   }),
 
   computed: {
@@ -63,9 +77,8 @@ export default {
           ...arrayFinal,
           ...cachorro.subRaca.map((subRaca) => `${cachorro.raca} ${subRaca}`),
         ];
-      }, []);                                                                                                                     
+      }, []);
     },
-  
   },
 
   watch: {},
@@ -74,6 +87,7 @@ export default {
 
   mounted() {
     this.getTodosCachorros();
+    this.populaCachorros();
   },
 
   beforeDestroy() {},
@@ -84,32 +98,39 @@ export default {
         let response = await this.$http.get(
           "https://dog.ceo/api/breeds/list/all"
         );
-
         this.racasCachorro = Object.keys(response.data.message).map((raca) => ({
           raca,
           subRaca: response.data.message[raca],
         }));
       } catch (error) {
         console.log(error);
-      } 
+      }
     },
 
-    async getCachorroSelecionado(){
+    async populaCachorros() {
       try {
-
-        let raca = this.cachorroPesquisado.replace(' ', '/'); 
- 
-        let response = await this.$http.get(`https://dog.ceo/api/breed/${raca}/images/random/50`);
-
-        this.imagens = response.data.message; 
-
-        console.log(this.imagens); 
+        let response = await this.$http.get(
+          `https://dog.ceo/api/breeds/image/random/50`
+        );
+        this.imagens = response.data.message;
       } catch (error) {
-         console.log(error);
+        console.log(error);
       }
-    }, 
+    },
 
-    capitalize: function (value) {
+    async getCachorroSelecionado() {
+      try {
+        let raca = this.cachorroPesquisado.replace(" ", "/");
+        let response = await this.$http.get(
+          `https://dog.ceo/api/breed/${raca}/images/random/50`
+        );
+        this.imagens = response.data.message;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    capitalize: function(value) {
       if (!value) return "";
       value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
