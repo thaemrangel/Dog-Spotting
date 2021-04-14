@@ -1,13 +1,18 @@
-<template> 
-    <v-card class="d-flex flex-wrap mb-5" elevation="0">
-      <v-card class="mx-auto" width="250" outlined>
-        <v-img aspect-ratio="1" :src="enderecoImagem"></v-img>
+<template>
+  <v-card class="d-flex flex-wrap mb-5" elevation="0">
+    <v-card class="mx-auto" width="250" outlined>
+      <v-img aspect-ratio="1" :src="enderecoImagem"></v-img>
 
-        <v-card-text align="right" class="indigo lighten-5">
-          <v-icon @click="changeColorHandler()" :color="cor">mdi-heart</v-icon>
-        </v-card-text>
-      </v-card>
-    </v-card> 
+      <v-card-text class="indigo lighten-5">
+        <v-card-title>
+          <v-btn class="flex-row-reverse" icon @click="toggleFavorito">
+            <v-icon color="orange" v-if="favorito"> mdi-heart </v-icon>
+            <v-icon v-else color="indigo lighten-4"> mdi-heart-outline </v-icon>
+          </v-btn>
+        </v-card-title>
+      </v-card-text>
+    </v-card>
+  </v-card>
 </template>
 
 
@@ -17,50 +22,28 @@ export default {
   components: {},
   props: {
     enderecoImagem: { type: String, default: "" },
+    favorito: { type: Boolean, default: false },
   },
-  data: () => ({
-    imagem: [],
-    cor: "indigo lighten-4",
-  }),
-  computed: {
-    getCachorroEspecifico() {
-      let html = "";
-      let racaPesquisada = this.raca.toLowerCase();
-
-      if (racaPesquisada !== "") {
-        if (racaPesquisada.includes(" ")) {
-          racaPesquisada = racaPesquisada.split(" ");
-          racaPesquisada = racaPesquisada[1] + "/" + racaPesquisada[0];
-        }
-
-        fetch(`https://dog.ceo/api/breed/${racaPesquisada}/images/random/50`)
-          .then((resposta) => resposta.json())
-          .then((data) => (this.imagem = data));
-      }
-
-      return html;
-    },
-  },
+  data: () => ({}),
+  computed: {},
   watch: {},
   created() {},
-  mounted() {
-    this.getTodosCachorros();
-  },
+  mounted() {},
   beforeDestroy() {},
   methods: {
-    getTodosCachorros() {
-      fetch("https://dog.ceo/api/breeds/image/random/50")
-        .then((resposta) => resposta.json())
-        .then((data) => (this.imagem = data));
-
-      this.imagem = [...new Set(this.imagem)];
+    adicionarFavorito() {
+      this.$emit("adicionar", this.enderecoImagem);
     },
 
-    changeColorHandler() {
-      if (this.cor == "indigo lighten-4") {
-        this.cor = "orange";
+    removerFavorito() {
+      this.$emit("remover", this.enderecoImagem);
+    },
+
+    toggleFavorito() {
+      if (this.favorito) {
+        this.removerFavorito();
       } else {
-        this.cor = "indigo lighten-4";
+        this.adicionarFavorito();
       }
     },
   },

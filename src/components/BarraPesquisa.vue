@@ -35,7 +35,8 @@
       <template #default="{ items }">
       <v-row>
         <v-col v-for="enderecoImagem in items" :key="enderecoImagem">
-          <CardCachorro :endereco-imagem="enderecoImagem" />
+          <CardCachorro v-if="verificarExiste(enderecoImagem)" :endereco-imagem="enderecoImagem" :favorito="true"  @adicionar="adicionarListaFavoritos" @remover="removerListaFavoritos" />
+          <CardCachorro v-else :endereco-imagem="enderecoImagem" :favorito="false" @adicionar="adicionarListaFavoritos" @remover="removerListaFavoritos" />
         </v-col>
       </v-row>
       </template>
@@ -61,6 +62,8 @@ export default {
   data: () => ({
     cachorroPesquisado: "",
     imagens: [],
+    listaFavoritos:[], 
+
     racasCachorro: [],
     itemsPerPage: 8,
     itemsPerPageArray: [8, 16, 24, -1],
@@ -88,6 +91,7 @@ export default {
   mounted() {
     this.getTodosCachorros();
     this.populaCachorros();
+    this.getCachorrosFavoritados();
   },
 
   beforeDestroy() {},
@@ -95,7 +99,7 @@ export default {
   methods: {
     async getTodosCachorros() {
       try {
-        let response = await this.$http.get(
+        const response = await this.$http.get(
           "https://dog.ceo/api/breeds/list/all"
         );
         this.racasCachorro = Object.keys(response.data.message).map((raca) => ({
@@ -109,7 +113,7 @@ export default {
 
     async populaCachorros() {
       try {
-        let response = await this.$http.get(
+        const response = await this.$http.get(
           `https://dog.ceo/api/breeds/image/random/50`
         );
         this.imagens = response.data.message;
@@ -120,14 +124,43 @@ export default {
 
     async getCachorroSelecionado() {
       try {
-        let raca = this.cachorroPesquisado.replace(" ", "/");
-        let response = await this.$http.get(
+        const raca = this.cachorroPesquisado.replace(" ", "/");
+        const response = await this.$http.get(
           `https://dog.ceo/api/breed/${raca}/images/random/50`
         );
         this.imagens = response.data.message;
       } catch (error) {
         console.log(error);
       }
+    },
+
+    adicionarListaFavoritos(enderecoImagem){
+      if(!this.verificarExiste(enderecoImagem)){
+        this.listaFavoritos.push(enderecoImagem);
+        this.saveCachorroFavoritado();
+      }
+    },
+
+    removerListaFavoritos(enderecoImagem){
+      if(this.verificarExiste(enderecoImagem)){
+        const indice = this.listaFavoritos.findIndex((favorito) => favorito === enderecoImagem);      
+        this.listaFavoritos.splice(indice, 1);
+        this.saveCachorroFavoritado();
+      }
+    },
+
+    verificarExiste(enderecoImagem){
+      return this.listaFavoritos.includes(enderecoImagem); 
+    },
+
+    getCachorrosFavoritados(){
+      if(localStorage.getItem('listaFavoritos')){
+        this.listaFavoritos = JSON.parse(localStorage.getItem('listaFavoritos'));
+      } 
+    },
+
+    saveCachorroFavoritado(){
+      localStorage.setItem('listaFavoritos', JSON.stringify(this.listaFavoritos));
     },
 
     capitalize: function(value) {
