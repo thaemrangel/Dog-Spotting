@@ -1,6 +1,5 @@
 <h1 align="center"> About the project </h1>
-
-![b1](https://img.shields.io/tokei/lines/github/thaemrangel/Dog-Spotting)
+ 
 ![b2](https://img.shields.io/github/stars/thaemrangel/Dog-Spotting) 
 ![b3](https://img.shields.io/github/issues/thaemrangel/Dog-Spotting)
 ![b4](https://img.shields.io/github/forks/thaemrangel/Dog-Spotting)
