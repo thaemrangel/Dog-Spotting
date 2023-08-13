@@ -26,4 +26,9 @@ Use ``npm install`` to install the dependencies to run this project.
 | [Sass](https://sass-lang.com/)  | 1.32.0 | 
 | [Vuetify](https://vuetifyjs.com/en/)  | 1.7.0 |
 
+
+##   How to run this project: 
+First, you will need to have Node installed. To run the version of this project localy, use ``npm run serve`` on terminal after downloading dependencies.
+
+<hr>
 A small project by [me](https://github.com/thaemrangel). | Thank you for visiting! 🐶
